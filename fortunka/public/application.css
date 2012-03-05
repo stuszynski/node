@@ -1,0 +1,16 @@
+html {
+  background-color: #006;
+}
+
+body {
+  background-color: #FFF;
+  width: 600px;
+  margin: 1em auto;
+  padding: 2em;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+p {
+  margin-bottom: 0.25em;
+}
