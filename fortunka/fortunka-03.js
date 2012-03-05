@@ -5,7 +5,11 @@ var express = require('express'),
 
 app.set('view engine', 'ejs');
 
+// zobacz http://www.senchalabs.org/connect/
+
 // app.use('/public', express.static(__dirname + '/public'));
+//    'stylesheets': ['/public/application.css']
+
 app.use(express.static(__dirname + '/public'));
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
@@ -43,7 +47,7 @@ app.get('/', function(req, res) {
       'title': title,
       'header': header,
       'fortunes': fortunes,
-      'stylesheets': ['application.css']
+      'stylesheets': ['/application.css']
     }
   });
 });
