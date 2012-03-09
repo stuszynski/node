@@ -1,0 +1,22 @@
+<!doctype html public "i ♥ socket.io">
+<html lang=pl>
+<head>
+  <meta charset=utf-8>
+  <title>socket.io demo</title>
+  <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io.connect('http://localhost:8080');
+    socket.on('news', function (data) {
+      console.log(data);
+      socket.emit('my other event', { my: 'data' });
+    });
+  </script>
+  <style>
+    body { font-size: 22px; background: #E2DF9A; }
+  </style>
+</head>
+<body>
+  <h1>socket.io demo</h1>
+  <p>Open console
+</body>
+</html>
