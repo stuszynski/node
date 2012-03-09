@@ -1,0 +1,22 @@
+<!doctype html public "i ♥ socket.io">
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io.connect('http://localhost:8080');
+      socket.on('news', function (data) {
+        console.log('data received from server: ', data);
+        socket.emit('other server event', { my: 'client data' });
+      });
+      socket.emit('other server event', { my: 'more client data...' });
+    </script>
+
+    <title>Node HTTP server + Socket.IO example</title>
+  </head>
+
+  <body>
+    <h1>Node HTTP server + Socket.IO example</h1>
+  </body>
+</html>

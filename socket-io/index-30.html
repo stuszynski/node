@@ -1,0 +1,31 @@
+<!doctype html public "i ♥ socket.io">
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+
+    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <script>
+      var chat = io.connect('http://localhost:8080/chat')
+        , news = io.connect('http://localhost:8080/news');
+
+      chat.on('connection', function(data) {
+        console.log('connect:', data);
+        chat.emit('======== Hi to everyone!');
+      });
+
+      news.on('news', function(data) {
+        console.log('news:', data);
+        news.emit('******** Woot!');
+      });
+      news.on('a message', function(data) {
+        console.log('message:', data);
+      });
+    </script>
+
+    <title>Socket.IO namespacing example</title>
+  </head>
+
+  <body>
+    <h1>Socket.IO namespacing example</h1>
+  </body>
+</html>
