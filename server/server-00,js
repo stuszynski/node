@@ -6,7 +6,7 @@ var http = require('http');
 var server = http.createServer();
 
 server.on('request', function (req, res) {
-    console.dir(req.headers);
+  console.dir(req.headers);
   res.writeHead(200, {'Content-Type': 'text/plain'});
   res.write('hello world\n');
   res.end('witaj świecie\n');
