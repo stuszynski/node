@@ -2,25 +2,25 @@ var http = require('http');
 
 var scroll = function(opts) {
   return http.get(opts, function(res) {
-    console.warn('response: ', res.statusCode);
-    console.warn('headers:', JSON.stringify(res.headers));
+    console.warn('scroll response: ', res.statusCode);
+    console.warn('scroll headers:', JSON.stringify(res.headers));
 
     if (res.statusCode == 200) {
-      console.warn('success');
+      console.warn('scroll success');
     } else {
-      console.warn('problems');
+      console.warn('scroll problems');
     };
   });
 };
 
 var scan = function(opts) {
   return http.request(opts, function(res) {
-    console.warn('status:', res.statusCode);
-    console.warn('headers:', res.headers);
+    console.warn('scan status:', res.statusCode);
+    console.warn('scan headers:', res.headers);
     if (res.statusCode == 200) {
-      console.warn('success');
+      console.warn('scan success');
     } else {
-      console.warn('problems');
+      console.warn('scan problems');
     };
   });
 };
@@ -28,7 +28,7 @@ var scan = function(opts) {
 var scroll_opts = {
   host: 'localhost'
 , port: 9200
-, path: '/nosql_tweets/_search?search_type=scan&scroll=10m&size=2'
+, path: '/nosql_tweets/_search?search_type=scan&scroll=10m&size=8'  // 10 == best const?
 };
 
 var scan_opts = {
@@ -43,10 +43,15 @@ var request_1 = scroll(scroll_opts);
 request_1.on('response', function(res) {
   res.setEncoding('utf8');
   res.on('data', function (chunk) {
-    var scroll_id = JSON.parse(chunk)._scroll_id;
-    console.warn('body:', scroll_id);
+    var results = JSON.parse(chunk);
+    var scroll_id = results._scroll_id;
+    var total = results.hits.total;
 
-    for(var i = 0; i < 2; i++) {
+    console.warn('scroll_id:', scroll_id);
+    console.warn('hits.total:', total);
+    console.warn('iterations:', Math.ceil(total / 8));
+
+    for(var i = 0; i < Math.ceil(total / 8); i++) {
       var request_2 = scan(scan_opts);
 
       request_2
