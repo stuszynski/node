@@ -1,23 +1,23 @@
-var rest = require('restler');
+var rest = require('restler');  // https://github.com/danwrong/restler
 
-var iterate = function(result) {
-  rest.post('http://localhost:9200/_search/scroll?scroll=10m', { data: result._scroll_id } )
-    .on('success', function(result, response) {
-      if (result.hits.hits.length != 0) {
-        // console.warn('scroll_id', result._scroll_id);
-        // console.warn('    get #', result.hits.hits.length, 'tweets');
-        result.hits.hits.forEach(function(tweet) {
-          // console.log(JSON.stringify(tweet)); // put json on one line?
-          console.log(tweet._source.text); // put json on one line?
+var iterate = function(data) {
+  rest.get('http://localhost:9200/_search/scroll?scroll=10m', { data: data._scroll_id } )
+    .on('success', function(data, response) {
+      if (data.hits.hits.length != 0) {
+        // console.warn('scroll_id', data._scroll_id);
+        // console.warn('    get #', data.hits.hits.length, 'tweets');
+        data.hits.hits.forEach(function(tweet) {
+          console.log(JSON.stringify(tweet)); // put json on one line?
+          // console.log(JSON.stringify(tweet._source.text)); // put json on one line?
         });
-        iterate(result);
+        iterate(data);
       };
     });
 };
 
 rest.get('http://localhost:9200/nosql_tweets/_search?search_type=scan&scroll=10m&size=8')
-  .on('success', function(result, response) {
-    iterate(result);
+  .on('success', function(data, response) {
+    iterate(data);
   });
 
 // 1 step: get _scroll_id
@@ -30,7 +30,7 @@ rest.get('http://localhost:9200/nosql_tweets/_search?search_type=scan&scroll=10m
 
 // 2nd step: get tweets
 //
-// result: { _scroll_id: 'c2NhbjsxOzEzOTpDb3FnTWp2QlNkdVF0T2VEaGl2VnVROzE7dG90YWxfaGl0czoxOTs=',
+// { _scroll_id: 'c2NhbjsxOzEzOTpDb3FnTWp2QlNkdVF0T2VEaGl2VnVROzE7dG90YWxfaGl0czoxOTs=',
 //   took: 0,
 //   timed_out: false,
 //   _shards: { total: 1, successful: 1, failed: 0 },
